@@ -5,6 +5,6 @@ found obtained from the NCBI SRA archive under Bioproject number XXXXXXX. For qu
 Ifeoma R. Ugwuanyi at ifeoma.r.ugwuanyi@gmail.com.
 ###########################################################################################################
 
-##Below is a list of all software packages used for metagenome sequence analyses
-##Quality control
-#Trimmomatics v0.36
+Below is a list of all software packages used for metagenome sequence analyses  <br />
+* Quality control <br />
+    * Trimmomatics v0.36 <br />
