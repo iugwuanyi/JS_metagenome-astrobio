@@ -1,4 +1,4 @@
-#Metagenome sequences were trimmed using Trimmomatics
+##Metagenome sequences were trimmed using Trimmomatics
 #!/bin/bash
 for i in {1..14};
 do
