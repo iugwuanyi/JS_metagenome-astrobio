@@ -7,5 +7,5 @@ Ifeoma R. Ugwuanyi at ifeoma.r.ugwuanyi@gmail.com.
 
 Below is a list of all software packages used for metagenome sequence analyses  <br />
 * Quality control <br />
-    * Trimmomatics v0.36 <br />
+    * Trimmomatic v0.39 <br />
     * Kaiju v1.8.2 <br />
