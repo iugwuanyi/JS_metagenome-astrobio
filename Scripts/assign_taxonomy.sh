@@ -6,6 +6,7 @@
 mkdir kaijudb
 cd kaijudb
 kaiju-makedb -s nr_euk
+cd ..
 #Running Kaiju
 kaiju-multi -z 48 -t kaiju/bin/kaijudb/nodes.dmp kaiju/bin/kaijudb/kaiju_db_nr_euk.fmi -v -e 5 -s 75\
 -i 1_paired_1.fastq,2_paired_1.fastq,3_paired_1.fastq,4_paired_1.fastq,5_paired_1.fastq,6_paired_1.fastq,7_paired_1.fastq,\
