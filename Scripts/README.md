@@ -8,7 +8,11 @@ number XXXXXXX. For questions, please contact Ifeoma R. Ugwuanyi at ifeoma.r.ugw
 Below is a list of all software packages used for metagenome sequence analyses  <br />
 * Trimmomatic v0.39 <br />
 * Kaiju v1.8.2 <br />
+* MEGAHIT v1.2.9 <br />
 
 
-Metagenome sequences were trimmed with [Trimmomatic](https://github.com/usadellab/Trimmomatic) using the trim_sequence.sh script. After trimming, sequences 
-were taxonomically profiled with [Kaiju](https://github.com/bioinformatics-centre/kaiju) using assign_taxonomy.sh script.
+Metagenome sequences were trimmed with [Trimmomatic](https://github.com/usadellab/Trimmomatic) using the trim_sequence.sh script. 
+After trimming, sequences were taxonomically profiled with [Kaiju](https://github.com/bioinformatics-centre/kaiju) using 
+assign_taxonomy.sh script. In order to generate draft genomes (bins), metagenome sequences were assembled into contigs with 
+MEGAHIT v1.2.9 using the assemble_metagenomes.sh script. Samples from individual springs (active and relic springs) were co-assemled 
+to maximize the recovery of genomes
