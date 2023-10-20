@@ -14,5 +14,5 @@ Below is a list of all software packages used to process metagenome sequence: <b
 Metagenome sequences were trimmed with [Trimmomatic](https://github.com/usadellab/Trimmomatic) using the trim_sequence.sh script. 
 After trimming, sequences were taxonomically profiled with [Kaiju](https://github.com/bioinformatics-centre/kaiju) using 
 assign_taxonomy.sh script. In order to generate draft genomes (bins), metagenome sequences were assembled into contigs with 
-[MEGAHIT](https://github.com/voutcn/megahit) using the assemble_metagenomes.sh script. Samples from individual springs (active and relic springs) were co-assembled 
-to maximize the recovery of genomes.
+[MEGAHIT](https://github.com/voutcn/megahit) using the assemble_metagenomes.sh script. Samples from individual springs (active and relic springs) 
+were co-assembled to maximize the recovery of genomes.
