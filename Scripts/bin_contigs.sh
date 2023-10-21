@@ -2,7 +2,7 @@
 ##metaBAT2 v2.12.1. Instructions on how to install and run metaWRAP can be found at https://github.com/bxlab/metaWRAP
 #!/bin/bash
 conda activate metawrap-env
-metaWRAP binning -o JS_active_Binning -t 48 -a JS_active_MegahitAssemb/final.contigs.fa --concoct metabat2\
+metaWRAP binning -o JS_active_Binning -t 48 -a JS_active_MegahitAssemb/final.contigs.fa --concoct --metabat2 \
 trimmed_sequences/1_paired_1.fastq trimmed_sequences/1_paired_2.fastq trimmed_sequences/2_paired_1.fastq trimmed_sequences/2_paired_2.fastq \
 trimmed_sequences/3_paired_1.fastq trimmed_sequences/3_paired_2.fastq trimmed_sequences/4_paired_1.fastq trimmed_sequences/4_paired_2.fastq \
 trimmed_sequences/5_paired_1.fastq trimmed_sequences/5_paired_2.fastq trimmed_sequences/6_paired_1.fastq trimmed_sequences/6_paired_2.fastq \
