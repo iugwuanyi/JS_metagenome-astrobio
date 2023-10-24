@@ -21,4 +21,5 @@ assign_taxonomy.sh script. In order to generate draft genomes (bins), metagenome
 [MEGAHIT](https://github.com/voutcn/megahit) using the assemble_metagenomes.sh script. Samples from individual springs (active and relic springs) 
 were co-assembled to maximize the recovery of genomes. Contigs were then clustered into metagenomic bins with [metaWRAP](https://github.com/bxlab/metaWRAP)
 using the bin_contigs.sh script. The resulting bins were consolidated and bins with over 50% completeness and less than 10% contamination were 
-selected with metaWRAP refinement module using the consolidate_bins.sh script. 
+selected with metaWRAP refinement module using the consolidate_bins.sh script. The distribution and abundance of bins across all samples were estimated 
+with metaWRAP quant_bin module using the bin_abundance.sh script.
