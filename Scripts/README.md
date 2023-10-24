@@ -14,7 +14,7 @@ Below is a list of all software packages used to process metagenome sequence: <b
 	* CONCOCT v1.1.0 <br />
 	* metaBAT2 v2.12.1 <br />
 	* checkM v1.0.12 <br />
-	* Salmon <br />
+	* Salmon v0.13.1 <br />
 	* SPAdes v3.13.0 <br />
 
 ## Below is a description of the sequence processing pipeline

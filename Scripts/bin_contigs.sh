@@ -1,7 +1,7 @@
+#!/bin/bash
 ##Contigs >1000 bp were binned using the binning module in metaWRAP v1.3. The two binning algorithms used were CONCOCT v1.1.0 and  
 ##metaBAT2 v2.12.1. Instructions on how to install and run metaWRAP can be found at https://github.com/bxlab/metaWRAP
-#!/bin/bash
-conda activate metawrap-env
+source ~/anaconda3/bin/activate metawrap-env
 metaWRAP binning -o JS_active_Binning -t 48 -a JS_active_MegahitAssemb/final.contigs.fa --concoct --metabat2 \
 trimmed_sequences/1_paired_1.fastq trimmed_sequences/1_paired_2.fastq trimmed_sequences/2_paired_1.fastq trimmed_sequences/2_paired_2.fastq \
 trimmed_sequences/3_paired_1.fastq trimmed_sequences/3_paired_2.fastq trimmed_sequences/4_paired_1.fastq trimmed_sequences/4_paired_2.fastq \

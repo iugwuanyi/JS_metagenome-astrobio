@@ -1,7 +1,7 @@
+#!/bin/bash
 ##Taxonomy was assigned to sequences using Kaiju v1.82 against the NCBI nr+euk database. The parameters used to assign taxonomy
 ##are run mode: greedy, minimum match length: 11, minimum match score: 75, allowed mismatches: 5. Instructions on how to install 
 ##and run Kaiju can be found here https://github.com/bioinformatics-centre/kaiju
-#!/bin/bash
 #Unzipping and renaming trimmed sequences
 cd trimmed_sequences
 gunzip *.gz
