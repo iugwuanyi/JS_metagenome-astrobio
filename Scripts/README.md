@@ -1,6 +1,6 @@
 ###########################################################################################################
 This directory contains all the scripts used to process metagenome sequences and build metagenome assembled 
-genomes (MAGs)from biofilm and gravel samples collected from a travertine-forming spring in Svalbard in 
+genomes (MAGs) from biofilm and gravel samples collected from a travertine-forming spring in Svalbard in 
 August 2011. The raw metagenome sequences and the associated MAGs can be found obtained from the NCBI SRA 
 archive under Bioproject number XXXXXXX. For questions, please contact Ifeoma R. Ugwuanyi at 
 ifeoma.r.ugwuanyi@gmail.com.
