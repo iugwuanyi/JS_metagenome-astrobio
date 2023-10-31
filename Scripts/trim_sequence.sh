@@ -1,6 +1,12 @@
 #!/bin/bash
-##Paired-end metagenome sequences were trimmed using Trimmomatic v0.39. The parameters used were SLIDINGWINDOW:4:15, LEADING:3, TRAILING:3,  and MINLEN:36. 
-##Instructions on how to install and run Trimmomatic can be found here https://github.com/usadellab/Trimmomatic
+
+#######################################################################################################################
+# Paired-end metagenome sequences were trimmed using Trimmomatic v0.39. The parameters used were SLIDINGWINDOW:4:15, LEADING:3, 
+# TRAILING:3,  and MINLEN:36. Instructions on how to install and run Trimmomatic can be found here 
+# https://github.com/usadellab/Trimmomatic
+#######################################################################################################################
+
+#trimming all metagenome sequences
 mkdir trimmed_sequences
 for i in {1..14};
 do
