@@ -20,10 +20,12 @@ cat 8_paired_1.fastq 9_paired_1.fastq 10_paired_1.fastq 11_paired_1.fastq 12_pai
 cat 8_paired_2.fastq 9_paired_2.fastq 10_paired_2.fastq 11_paired_2.fastq 12_paired_2.fastq 13_paired_2.fastq 14_paired_2.fastq > JS_relicAll_2.fastq
 cd
 
-#reassembling bins with the reassemble_bin module in metaWRAP
 source ~/anaconda3/bin/activate metawrap-env
+
+#reassembling bins with metaWRAP
 metawrap reassemble_bins -o JS_active_reassembledbins -1 trimmed_sequences/active_sequences/JS_activeAll_1.fastq \
 -2 trimmed_sequences/active_sequences/JS_activeAll_2.fastq -t 48 -m 180 -c 50 -x 10 -b JS_active_binRefined/metawrap_50_10_bins
 metawrap reassemble_bins -o JS_relic_reassembledbins -1 trimmed_sequences/relic_sequences/JS_relicAll_1.fastq \
 -2 trimmed_sequences/relic_sequences/JS_relicAll_2.fastq -t 48 -m 180 -c 50 -x 10 -b JS_relic_binRefined/metawrap_50_10_bins
+
 conda deactivate
