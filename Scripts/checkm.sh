@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #######################################################################################################################
-# CheckM was used to assess the completness and contamination of reassembled MAGS. Instructions on how to install and run
+# CheckM v1.0.13 was used to assess the completness and contamination of reassembled MAGS. Instructions on how to install and run
 # CheckM can be found at https://github.com/Ecogenomics/CheckM
 #######################################################################################################################
 
