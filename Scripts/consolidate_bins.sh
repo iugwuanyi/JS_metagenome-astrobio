@@ -8,10 +8,10 @@
 
 source ~/anaconda3/bin/activate metawrap-env
 
-#consolidating bins from active metagenomes
+#consolidate bins from active metagenomes
 metawrap bin_refinement -o JS_active_binRefined -t 96 -A JS_active_Binning/metabat2_bins/ -B JS_active_Binning/concoct_bins/ -c 50 -x 10
 
-#consolidating bins from relic metagenomes
+#consolidate bins from relic metagenomes
 metawrap bin_refinement -o JS_relic_binRefined -t 96 -A JS_relic_Binning/metabat2_bins/ -B JS_relic_Binning/concoct_bins/ -c 50 -x 10
 
 conda deactivate

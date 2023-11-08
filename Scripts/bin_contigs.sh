@@ -7,14 +7,14 @@
 
 source ~/anaconda3/bin/activate metawrap-env
 
-#binning contigs from active metagenomes
+#bin contigs from active metagenomes
 metaWRAP binning -o JS_active_Binning -t 48 -a JS_active_MegahitAssemb/final.contigs.fa --concoct --metabat2 \
 trimmed_sequences/1_paired_1.fastq trimmed_sequences/1_paired_2.fastq trimmed_sequences/2_paired_1.fastq trimmed_sequences/2_paired_2.fastq \
 trimmed_sequences/3_paired_1.fastq trimmed_sequences/3_paired_2.fastq trimmed_sequences/4_paired_1.fastq trimmed_sequences/4_paired_2.fastq \
 trimmed_sequences/5_paired_1.fastq trimmed_sequences/5_paired_2.fastq trimmed_sequences/6_paired_1.fastq trimmed_sequences/6_paired_2.fastq \
 trimmed_sequences/7_paired_1.fastq trimmed_sequences/7_paired_2.fastq 
 
-#binning contigs from relic metagenomes
+#bin contigs from relic metagenomes
 metaWRAP binning -o JS_relic_Binning -t 48 -a JS_relic_MegahitAssemb/final.contigs.fa --concoct --metabat2 \
 trimmed_sequences/8_paired_1.fastq trimmed_sequences/8_paired_2.fastq trimmed_sequences/9_paired_1.fastq trimmed_sequences/9_paired_2.fastq \
 trimmed_sequences/10_paired_1.fastq trimmed_sequences/10_paired_2.fastq trimmed_sequences/11_paired_1.fastq trimmed_sequences/11_paired_2.fastq \

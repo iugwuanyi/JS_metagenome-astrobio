@@ -7,10 +7,10 @@
 
 source ~/anaconda3/bin/activate checkm
 
-#running checkM on reassembled active MAGs
+#run checkM on reassembled active MAGs
 checkm lineage_wf -x fa -t 48 JS_active_reassembledbins JS_active_binCheckm
 
-#running checkM on reassembled relic MAGs
+#run checkM on reassembled relic MAGs
 checkm lineage_wf -x fa -t 48 JS_relic_reassembledbins JS_relic_binCheckm
 
 conda deactivate

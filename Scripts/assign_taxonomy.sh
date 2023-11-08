@@ -6,7 +6,7 @@
 # and run Kaiju can be found here https://github.com/bioinformatics-centre/kaiju
 #######################################################################################################################
 
-#Unzipping and renaming trimmed sequences to names suitable for Kaiju
+#Unzip and rename trimmed sequences to names suitable for Kaiju
 cd trimmed_sequences
 gunzip *.gz
 for i in {1..14};
@@ -16,14 +16,14 @@ mv ${i}_reverse_paired.fastq ${i}_paired_2.fastq
 done
 cd
 
-#Creating Kaiju index
+#Create Kaiju index
 cd kaiju
 mkdir kaijudb
 cd kaijudb
 kaiju-makedb -s nr_euk
 cd
 
-# Annotating sequences with Kaiju
+# Annotate sequences with Kaiju
 mkdir kaiju_output
 kaiju-multi -z 48 -t kaiju/bin/kaijudb/nodes.dmp kaiju/bin/kaijudb/kaiju_db_nr_euk.fmi -v -e 5 -s 75\
 -i trimmed_sequences/1_paired_1.fastq,trimmed_sequences/2_paired_1.fastq,trimmed_sequences/3_paired_1.fastq,\
@@ -40,7 +40,7 @@ kaiju_output/3_taxonomyKaiju.out,kaiju_output/4_taxonomyKaiju.out,kaiju_output/5
 kaiju_output/7_taxonomyKaiju.out,kaiju_output/8_taxonomyKaiju.out,kaiju_output/9_taxonomyKaiju.out,kaiju_output/10_taxonomyKaiju.out,\
 kaiju_output/11_taxonomyKaiju.out,kaiju_output/12_taxonomyKaiju.out,kaiju_output/13_taxonomyKaiju.out,kaiju_output/14_taxonomyKaiju.out
 
-#Generating summary taxonomy table from the output above. Unclassified reads excluded from the total number of reads when calculating percentages.
+#Generate summary taxonomy table from the output above. Unclassified reads excluded from the total number of reads when calculating percentages.
 cd kaiju_output
 kaiju2table -t ~/kaiju/bin/kaijudb/nodes.dmp -n ~/kaiju/bin/kaijudb/names.dmp -r species -l superkingdom,phylum,class,order,family,\
 genus,species -e -u -o JS_taxonomytable.tsv 1_taxonomyKaiju.out 2_taxonomyKaiju.out 3_taxonomyKaiju.out 4_taxonomyKaiju.out \

@@ -6,7 +6,7 @@
 # https://github.com/usadellab/Trimmomatic
 #######################################################################################################################
 
-#trimming all metagenome sequences
+#trim all metagenome sequences
 mkdir trimmed_sequences
 for i in {1..14};
 do
