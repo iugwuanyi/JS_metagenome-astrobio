@@ -30,5 +30,4 @@ binning module using the bin_contigs.sh script. The resulting bins were consolid
 selected with metaWRAP refinement module using the consolidate_bins.sh script. The distribution and abundance of bins across all samples were estimated 
 with metaWRAP quant_bin module using the bin_abundance.sh script. Bins were then reassembled with the metaWRAP reassemble_bin module using the reassemble_bins.sh 
 script to improve the quality of the bins. The contamination and completeness of reassembled MAGs were assessed using [CheckM](https://github.com/Ecogenomics/CheckM).
-Bins were then dereplicated using [dRep](https://github.com/MrOlm/drep).
-
+Bins were then dereplicated with [dRep](https://github.com/MrOlm/drep) using the dereplicate_bins.sh script.
