@@ -1,5 +1,5 @@
 ###########################################################################################################
-This directory contains all the scripts used to process metagenome sequences and build metagenome assembled 
+This directory contains all the scripts used to process metagenome sequences and build metagenome-assembled 
 genomes (MAGs) from biofilm and gravel samples collected from a travertine-forming spring in Svalbard in 
 August 2011. The raw metagenome sequences and the associated MAGs can be found obtained from the NCBI SRA 
 archive under Bioproject number XXXXXXX. For questions, please contact Ifeoma R. Ugwuanyi at 
@@ -18,6 +18,7 @@ Below is a list of all software packages used to process metagenome sequence: <b
 	* SPAdes v3.13.0 <br />
 * CheckM v1.0.13 <br />
 * dRep v3.4.2 <br />
+* GTDB-TK v1.7.0 <br />
 
 
 ## Below is a description of the sequence processing pipeline
@@ -29,5 +30,6 @@ were co-assembled to maximize the recovery of genomes. Contigs were then cluster
 binning module using the bin_contigs.sh script. The resulting bins were consolidated and bins with over 50% completeness and less than 10% contamination were 
 selected with metaWRAP refinement module using the consolidate_bins.sh script. The distribution and abundance of bins across all samples were estimated 
 with metaWRAP quant_bin module using the bin_abundance.sh script. Bins were then reassembled with the metaWRAP reassemble_bin module using the reassemble_bins.sh 
-script to improve the quality of the bins. The contamination and completeness of reassembled MAGs were assessed using [CheckM](https://github.com/Ecogenomics/CheckM).
-Bins were then dereplicated with [dRep](https://github.com/MrOlm/drep) using the dereplicate_bins.sh script.
+script to improve the quality of the bins. The contamination and completeness of reassembled MAGs were assessed with [CheckM](https://github.com/Ecogenomics/CheckM).
+MAGs were then dereplicated with [dRep](https://github.com/MrOlm/drep) using the dereplicate_bins.sh script. Taxonomy was assigned to each MAG based on the 
+Genome Taxonomy Database (GTDB) with [GTDB-TK](https://github.com/Ecogenomics/GTDBTk) using bin_taxonomy.sh script. 
