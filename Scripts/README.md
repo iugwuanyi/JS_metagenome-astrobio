@@ -6,7 +6,7 @@ archive under Bioproject number XXXXXXX. For questions, please contact Ifeoma R.
 ifeoma.r.ugwuanyi@gmail.com.
 ###########################################################################################################
 
-Below is a list of all software packages used to process metagenome sequence: <br />
+Below is a list of all software packages used to process metagenome sequences: <br />
 * Trimmomatic v0.39 <br />
 * Kaiju v1.8.2 <br />
 * MEGAHIT v1.2.9 <br />
