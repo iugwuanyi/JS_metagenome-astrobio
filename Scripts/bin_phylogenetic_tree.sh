@@ -11,11 +11,11 @@
 
 source ~/anaconda3/bin/activate iqtree
 
-#create tree for bacteria MAGs
+#create tree for dereplicated bacteria MAGs
 iqtree -s MAG_GTDBTKalign/gtdbtk.bac120.user_msa.fasta -m MFP -T 24 --prefix MAG_bact_iqtree
 
 
-#create tree for archaea MAGs
+#create tree for dereplicated archaea MAGs
 iqtree -s MAG_GTDBTKalign/gtdbtk.ar122.user_msa.fasta -m MFP -T 24 --prefix MAG_arch_iqtree
 
 conda deactivate

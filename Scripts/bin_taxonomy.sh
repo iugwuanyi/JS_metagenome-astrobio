@@ -10,7 +10,7 @@
 
 source ~/anaconda3/bin/activate gtdbtk
 
-#call genes and markers for all MAGs
+#call genes and markers for dereplicated MAGs
 gtdbtk identify --genome_dir MAGs_drep/dereplicated_genomes/ --out_dir MAG_GTDBTKidentify --cpus 12 -x fa
 
 #align identified genes and markers

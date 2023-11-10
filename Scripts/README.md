@@ -20,6 +20,7 @@ Below is a list of all software packages used to process metagenome sequences: <
 * dRep v3.4.2 <br />
 * GTDB-TK v1.7.0 <br />
 * IQ-TREE v2.1.2 <br />
+* EnrichM v0.5.0 <br />
 
 
 ## Below is a description of the sequence processing pipeline
@@ -35,4 +36,5 @@ script to improve the quality of the bins. The contamination and completeness of
 MAGs were then dereplicated with [dRep](https://github.com/MrOlm/drep) using the dereplicate_bins.sh script. Taxonomy was assigned to each MAG based on the 
 Genome Taxonomy Database (GTDB) with [GTDB-TK](https://github.com/Ecogenomics/GTDBTk) using bin_taxonomy.sh script. Phylogenetic trees were constructed for bacteria
 and archaea MAGs with [IQ-TREE](http://www.iqtree.org/) with the bin_phylogenetic_tree.sh script. [iTOL](https://itol.embl.de/) was used to visualize and annotate 
-phylogenetic tree.
+phylogenetic tree. Functions were assigned to MAGs with [EnrichM](https://github.com/geronimp/enrichM) using the bin_functions.sh script. Functional annotation of MAGs 
+was done using [KEGG](https://www.kegg.jp/kegg/ko.html) and [Pfam](http://pfam.xfam.org/) databases.
