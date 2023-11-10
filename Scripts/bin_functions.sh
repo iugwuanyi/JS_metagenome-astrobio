@@ -13,6 +13,6 @@ source ~/anaconda3/bin/activate enrichm
 enrichm annotate --genome_directory MAGs_drep/dereplicated_genomes/ --output MAGs_KOannotate --ko --threads 24 --suffix .fa
 
 #annotate dereplicated MAGs using PFAM database
-enrichm annotate --genome_directory MAGs_drep/dereplicated_genomes/ --output MAGs_KOannotate --pfam --threads 24 --suffix .fa
+enrichm annotate --genome_directory MAGs_drep/dereplicated_genomes/ --output MAGs_PFAMannotate --pfam --threads 24 --suffix .fa
 
 conda deactivate
