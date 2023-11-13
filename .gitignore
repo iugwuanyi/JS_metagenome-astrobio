@@ -1,0 +1,4 @@
+#Ignore all files below
+Data_files/*.tsv
+Data_files/*.txt
+Data_files/*.xlsx
