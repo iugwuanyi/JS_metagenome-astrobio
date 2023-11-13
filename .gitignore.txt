@@ -1,4 +1,4 @@
 #Ignore all files listed below
-*.xlsx
-*.tsv
-*.txt
+Data_files/*.xlsx
+Data_files/*.tsv
+Data_files/*.txt
