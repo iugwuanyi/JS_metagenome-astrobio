@@ -3,3 +3,4 @@ Data_files/
 Data_files/*.tsv
 Data_files/*.txt
 Data_files/*.xlsx
+*.tsv
