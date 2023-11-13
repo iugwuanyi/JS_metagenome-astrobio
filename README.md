@@ -4,5 +4,5 @@ This paper can be accessesed at XXXXXXXXX
 
 Cite as:
 
-#ADD CITATION HERE
+#ADD CITATION HERE WHEN PAPER IS PUBLISHED
 
