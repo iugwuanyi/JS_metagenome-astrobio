@@ -1,2 +1,1 @@
 #Ignore all files listed below
-Data_files/JS_taxonomytable.tsv
