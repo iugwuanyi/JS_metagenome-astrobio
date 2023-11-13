@@ -1,4 +1,2 @@
 #Ignore all files listed below
-Data_files/*.xlsx
-Data_files/*.tsv
-Data_files/*.txt
+Data_files/JS_taxonomytable.tsv
