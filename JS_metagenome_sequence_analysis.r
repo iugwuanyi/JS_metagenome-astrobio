@@ -36,6 +36,8 @@ clean_taxatable <- function(taxa_table){
     ungroup() %>% pivot_wider(names_from = Sample, values_from = Reads, values_fill = 0)
 }
 
+
+
 #################################################################################################################################################
 #
 # Correlation between temperature and pH measurements taken from sampling points along Jotun active spring (in situ) at three different years
@@ -50,9 +52,18 @@ Jotun_pH <- c(6.69, 6.79, 7.86, 6.55, 6.58, 6.25, 6.54, 6.60, 6.59, 6.63, 6.86)
 temp_ph.lm <- lm(Jotun_temp ~ Jotun_pH)
 summary(temp_ph.lm)
 
+
+
+#################################################################################################################################################
+# Import the output file generated after assigning taxonomy to metagenome sequences using kaiju v1.8.2. The imported taxonomy table is 
+# prepared for downstream analyses using the clean taxonomy table function above. Low abundance species and potential contaminants as listed 
+# below were then filtered from taxonomy table. Singleton and sequences in a single column were also filtered from the taxonomy table.
+#################################################################################################################################################
+
 # Import taxonomy table and prepare table for downstream analyses
-Taxonomy_table <- read.table("Data_files/JS_taxonomytable.tsv", header = TRUE, sep = "\t")
-Taxonomy_table <- clean_taxatable(Taxonomy_table) %>% 
+Taxonomy_table <- read_xlsx("Data_files/JS_taxonomytable.xlsx", sheet = "Sheet1")
+Taxonomy_table <- clean_taxatable(Taxonomy_table) %>%
   dplyr::rename(c("A-S1" = "1", "A-S2" = "2", "A-1" = "3", "A-2" = "4", "A-3" = "5", "A-4" = "6",
                   "A-5" = "7", "R-S" = "8", "R-1" = "9", "R-2" = "10", "R-3" = "11", 
                   "R-4_a" = "12", "R-4_b" = "13", "R-5" = "14"))
+
