@@ -2,8 +2,9 @@
 #
 # Analyses of data generated after analyzing metagenome sequences from biofilm and gravel samples collected from a 
 # travertine-forming spring in Svalbard in August 2011. Metagenome sequences were processed using scripts in the Scripts 
-# directory. All data tables used in this script can be found in my GitHub repository in the Data_files directory.
-# For questions, please contact Ifeoma R. Ugwuanyi at ifeoma.r.ugwuanyi@gmail.com.
+# directory. All data tables used in this script can be found in my GitHub repository in the Data_files directory. Regression 
+# analysis of on-site temperature and pH measurements included in the script For questions, please contact Ifeoma R. Ugwuanyi 
+# at ifeoma.r.ugwuanyi@gmail.com.
 #
 #######################################################################################################################
 
