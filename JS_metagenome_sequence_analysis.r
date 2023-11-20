@@ -130,7 +130,7 @@ singleton_in_taxonomytable  <- Taxonomy_lowabundremoved_noUnclassDomain_noKitLab
          Total= rowSums(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont[8:ncol(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont)])) %>% 
   filter(Total < 2 | Counts < 2) %>% select(-c(Total, Counts)) #identify singletons and species in only one sample in taxonomy table
 Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton <- setdiff(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont, singleton_in_taxonomytable) #remove singletons and species in only one sample from taxonomy table
-#write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS_clean_taxonomytable.csv") #export clean taxonomy table
+write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS_clean_taxonomytable.csv") #export clean taxonomy table
 
 
 #################################################################################################################################################
@@ -143,10 +143,14 @@ Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton <- setdiff(Tax
 #################################################################################################################################################
 
 #summarize phylum
-phylum <- summarize_taxa(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "Phylum") #the sum of phyla in each sample is calculated
+phylum <- summarize_taxa(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "Phylum") #calculate the sum of phyla in each sample
 top20_phylum <- top20(phylum) #generate a table containing only the top 20 phyla using the top_20 function above
-phylum_summary_forplot <- summarize_phyla_4_plot(phylum, top20_phylum) #%>% mutate(across(where(is.numeric), Rel_abund)) %>% 
-  #pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #generate a table of top 20 phyla and all other phyla are grouped into the category "Others". Table is pivoted to generate input for Tableau
-#write.csv(phylum_summary_forplot, "JS_phylum_summary_forplot.csv") #export file for Tableau
+phylum_summary_forplot <- summarize_phyla_4_plot(phylum, top20_phylum) %>% mutate(across(where(is.numeric), Rel_abund)) %>% 
+  pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #generate a table of top 20 phyla and all other phyla are grouped into the category "Others". Table is pivoted to generate input for Tableau
+write.csv(phylum_summary_forplot, "JS_phylum_summary_forplot.csv") #export file for Tableau
 
+
+#summarize genus
+genus <- summarize_taxa(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "Genus")  #calculate the sum of genera in each sample
+genus_relabund <- genus %>% mutate_if(is.numeric, Rel_abund) #calculate the relative abundance of genera in each sample
 
