@@ -64,14 +64,15 @@ summarize_phyla_4_plot <- function(table, top20_phyla_list){
   phylum_others <- table %>% anti_join(top20_phyla_list, by = "Phylum") %>% mutate(Phylum = "Others") %>% group_by(Phylum) %>% summarize_if(is.numeric, sum)
   phyla_list <- top20_phyla_list$Phylum
   phylum_top20 <- table %>% filter(Phylum %in% phyla_list)
-  phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)}
-
+  phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)
+}
 
 for_phylaplot <- function(table, phyla){
   phylum_others <- table %>% anti_join(phyla, by = "Phylum") %>% mutate(Phylum = "Others") %>% group_by(Phylum) %>% summarize_if(is.numeric, sum)
   phyla_list <- phyla$Phylum
   phylum_top20 <- table %>% filter(Phylum %in% phyla_list)
   phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)}
+
 
 #################################################################################################################################################
 #
