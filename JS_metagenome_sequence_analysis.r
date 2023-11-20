@@ -112,7 +112,7 @@ Taxonomy_table2 <- clean_taxatable(Taxonomy_table) %>%
 #filter potential contaminants and sequences unclassified at the domain level from taxonomy table
 ##filter species from individual samples if the relative abundance of the species < 0.0001 (i.e., 0.001%) in that sample
 Taxonomy_table_lowabundremoved <- Taxonomy_table2 %>% mutate(across(.cols = c(8:ncol(Taxonomy_table2)), .fns = ~case_when(.x/sum(.x) <0.0001 ~ 0, TRUE ~ as.numeric(.x))), 
-                                                            Counts = rowSums(across(c(8:ncol(Taxonomy_table))))) %>% filter(Counts != 0) %>% select(-Counts)
+                                                            Counts = rowSums(across(c(8:ncol(Taxonomy_table2))))) %>% filter(Counts != 0) %>% select(-Counts)
 
 ##remove sequences that are unclassified at the domain level 
 Taxonomy_table_lowabundremoved_noUnclassDomain <- Taxonomy_table_lowabundremoved %>% filter(Domain != "Unclassified")
@@ -130,7 +130,7 @@ singleton_in_taxonomytable  <- Taxonomy_lowabundremoved_noUnclassDomain_noKitLab
          Total= rowSums(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont[8:ncol(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont)])) %>% 
   filter(Total < 2 | Counts < 2) %>% select(-c(Total, Counts)) #identify singletons and species in only one sample in taxonomy table
 Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton <- setdiff(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont, singleton_in_taxonomytable) #remove singletons and species in only one sample from taxonomy table
-write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS_clean_taxonomytable.csv") #export clean taxonomy table
+#write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS_clean_taxonomytable.csv") #export clean taxonomy table
 
 
 #################################################################################################################################################
@@ -144,9 +144,9 @@ write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS
 
 #summarize phylum
 phylum <- summarize_taxa(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "Phylum") #the sum of phyla in each sample is calculated
-top20_phylum <- top20(Phylum) #generate a table containing only the top 20 phyla using the top_20 function above
-phylum_summary_forplot <- summarize_phyla_4_plot(Phylum, top20_phylum) %>% mutate(across(where(is.numeric), Rel_abund)) %>% 
-  pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #generate a table of top 20 phyla and all other phyla are grouped into the category "Others". Table is pivoted to generate input for Tableau
-write.csv(phylum_summary_forplot, "JS_phylum_summary_forplot.csv") #export file for Tableau
+top20_phylum <- top20(phylum) #generate a table containing only the top 20 phyla using the top_20 function above
+phylum_summary_forplot <- summarize_phyla_4_plot(phylum, top20_phylum) #%>% mutate(across(where(is.numeric), Rel_abund)) %>% 
+  #pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #generate a table of top 20 phyla and all other phyla are grouped into the category "Others". Table is pivoted to generate input for Tableau
+#write.csv(phylum_summary_forplot, "JS_phylum_summary_forplot.csv") #export file for Tableau
 
 
