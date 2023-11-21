@@ -171,6 +171,14 @@ rownames(species_transp_df) <- species_transp_df$Sample #change row names
 species_transp_df <- species_transp_df[,-1] #remove first row
 species_transp_df_OTU <- otu_table(species_transp_df, taxa_are_rows = FALSE) #create a phyloseq object 
 species_transp_df_rar <- rarefy_even_depth(species_transp_df_OTU, sample.size = min_n_seqs, rngseed = 123) ##rarify taxonomy table
+alpha_div <- estimate_richness(species_transp_df_rar, measures = c("Observed", "Shannon")) #calculate alpha diversity
+alpha_div$Pielous_Evenness <- alpha_div$Shannon/log(alpha_div$Observed) #calculate Pielou's evenness
+alpha_div$Location <- rep(c("Active", "Relic"), each = 7) #create a new row in the alpha diversity table that identifies the sampling location of each sample
+alpha_div$Sampling_point <- rep(c("Source", "midstream", "endstream", "Relic"), times = c(2,4,1,7)) #create a new row in the alpha diversity table that identifies the sampling point in the active spring
+alpha_div <- rownames_to_column(alpha_div, var = "Sample") %>% select(Sample, Location, Sampling_point, everything()) #rearrange columns
+write.csv(alpha_div, "JS_alpha_diversity.csv") #export alpha diversity table
+
+
 
 
 
