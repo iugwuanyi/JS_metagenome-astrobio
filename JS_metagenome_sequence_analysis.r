@@ -154,3 +154,37 @@ write.csv(phylum_summary_forplot, "JS_phylum_summary_forplot.csv") #export file 
 genus <- summarize_taxa(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "Genus")  #calculate the sum of genera in each sample
 genus_relabund <- genus %>% mutate_if(is.numeric, Rel_abund) #calculate the relative abundance of genera in each sample
 
+
+#################################################################################################################################################
+# 
+# Calculating alpha and beta diversity. Alpha diversity was calculated using both Phyloseq.  Before calculating alpha diversity and 
+# beta diversity, the taxonomy table was rarified to the minimum number of sequences in a sample. 
+#
+#################################################################################################################################################
+
+#calculate alpha diversity with phyloseq. The clean taxonomy table generated after filtering contaminants and singletons is used as input here.
+species <- Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton[,c(7:21)] #select the species and abundance columns 
+species_transp <- species %>% pivot_longer(cols = -Species) %>% pivot_wider(names_from = Species) %>% dplyr::rename("Sample" = "name") #transpose table so species names are columns and samples are rows
+min_n_seqs <- min(rowSums(species_transp[-1])) #calculate the number of sequences in each sample and select the minimum number of sequences
+species_transp_df <- as.data.frame(species_transp) #convert the data table from a tibble to dataframe 
+rownames(species_transp_df) <- species_transp_df$Sample #change row names
+species_transp_df <- species_transp_df[,-1] #remove first row
+species_transp_df_OTU <- otu_table(species_transp_df, taxa_are_rows = FALSE) #create a phyloseq object 
+species_transp_df_rar <- rarefy_even_depth(species_transp_df_OTU, sample.size = min_n_seqs, rngseed = 123) ##rarify taxonomy table
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
