@@ -26,7 +26,7 @@ library(ggplot2) # Data Visualization
 #
 #######################################################################################################################
 
-#generate a clean taxonomy table from the output of the Kaiju taxonomy run
+#function to generate a clean taxonomy table from the output of the Kaiju taxonomy run
 clean_taxatable <- function(taxa_table){
   taxa <- taxa_table %>% select(-2)
   taxa[taxa=="cannot be assigned to a (non-viral) species"] <- "Unclassified"
@@ -37,10 +37,10 @@ clean_taxatable <- function(taxa_table){
     ungroup() %>% pivot_wider(names_from = Sample, values_from = Reads, values_fill = 0)
 }
 
-#calculate the relative abundance
+#function to calculate the relative abundance
 Rel_abund <- function(x, na.rm = F){x / sum(x, na.rm = na.rm)} 
 
-#summarize the taxonomy table (sum) at different taxonomic levels. 
+#function to summarize the taxonomy table (sum) at different taxonomic levels. 
 summarize_taxa <- function(taxa_table, taxa_level = c("Domain", "Phylum", "Class", "Order", "Family", "Genus")){
   taxa_level <- match.arg(taxa_level)
   taxonomiclevel_relabund <- switch(taxa_level,
@@ -52,26 +52,20 @@ summarize_taxa <- function(taxa_table, taxa_level = c("Domain", "Phylum", "Class
                                     "Genus" = taxa_table %>% group_by(Genus) %>% summarise(across(where(is.numeric), sum)) %>% ungroup())
 }  
 
-# Select the top 20 taxa based on average at the selected taxonomic level. The summarized data is pivoted longer and the resulting table 
-# will be used to generate stacked bar plots in Tableau. The Rel_abund function has to be run for this function to work
+#function to select the top 20 taxa based on average at the selected taxonomic level. The Rel_abund function has to be run for this function to work
 top20 <- function(table){
   name <- deparse(substitute(table))
   table_agg <- table %>% filter(table[,1] != "Unclassified") %>% dplyr::mutate(Average = rowMeans(across(where(is.numeric)))) %>% arrange(desc(Average))
   table_top20 <- table_agg %>% select(-Average) %>% slice(1:20) %>% dplyr::mutate(across(where(is.numeric), Rel_abund))
 }
 
+#function to create a new taxonomy table with the top 20 taxa and all other taxa are grouped into a category "Others". 
 summarize_phyla_4_plot <- function(table, top20_phyla_list){
   phylum_others <- table %>% anti_join(top20_phyla_list, by = "Phylum") %>% mutate(Phylum = "Others") %>% group_by(Phylum) %>% summarize_if(is.numeric, sum)
   phyla_list <- top20_phyla_list$Phylum
   phylum_top20 <- table %>% filter(Phylum %in% phyla_list)
   phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)
 }
-
-for_phylaplot <- function(table, phyla){
-  phylum_others <- table %>% anti_join(phyla, by = "Phylum") %>% mutate(Phylum = "Others") %>% group_by(Phylum) %>% summarize_if(is.numeric, sum)
-  phyla_list <- phyla$Phylum
-  phylum_top20 <- table %>% filter(Phylum %in% phyla_list)
-  phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)}
 
 
 #################################################################################################################################################
@@ -117,8 +111,7 @@ Taxonomy_table_lowabundremoved <- Taxonomy_table2 %>% mutate(across(.cols = c(8:
 ##remove sequences that are unclassified at the domain level 
 Taxonomy_table_lowabundremoved_noUnclassDomain <- Taxonomy_table_lowabundremoved %>% filter(Domain != "Unclassified")
 
-##filter genera previously identified as microbiology kit and laboratory contaminants by Sheik et al. 2018 and Weyrich et al. 2019. The list of contaminant genera 
-##used is available in my Github repository in contaminant_genus.csv 
+##filter genera previously identified as microbiology kit and laboratory contaminants by Sheik et al. 2018 and Weyrich et al. 2019. The list of contaminant genera used is available in my Github repository in contaminant_genus.csv 
 contaminant <- read.csv("Data_files/contaminant_genus.csv", header = TRUE) #import contaminant_genus.csv
 cont_genus <- contaminant$Genus #change to a list
 contaminant_in_taxonomytable <- Taxonomy_table_lowabundremoved_noUnclassDomain %>% filter(Genus %in% cont_genus) #identify microbiology kit and laboratory contaminant in taxonomy table
@@ -174,17 +167,27 @@ species_transp_df_rar <- rarefy_even_depth(species_transp_df_OTU, sample.size = 
 alpha_div <- estimate_richness(species_transp_df_rar, measures = c("Observed", "Shannon")) #calculate alpha diversity
 alpha_div$Pielous_Evenness <- alpha_div$Shannon/log(alpha_div$Observed) #calculate Pielou's evenness
 alpha_div$Location <- rep(c("Active", "Relic"), each = 7) #create a new row in the alpha diversity table that identifies the sampling location of each sample
-alpha_div$Sampling_point <- rep(c("Source", "midstream", "endstream", "Relic"), times = c(2,4,1,7)) #create a new row in the alpha diversity table that identifies the sampling point in the active spring
+alpha_div$Sampling_point <- rep(c("Source", "midstream", "endstream", "dry."), times = c(2,4,1,7)) #create a new row in the alpha diversity table that identifies the sampling point in the active spring
 alpha_div <- rownames_to_column(alpha_div, var = "Sample") %>% select(Sample, Location, Sampling_point, everything()) #rearrange columns
 write.csv(alpha_div, "JS_alpha_diversity.csv") #export alpha diversity table
 
 
+#test statistical significance of observed differences in alpha diversity 
+##test significance with sampling_point as groups
+shannon.kruskal_sampt <- kruskal.test(Shannon ~ sample_point, data=alpha_div)
+observed.kruskal_sampt <- kruskal.test(Observed ~ sample_point, data=alpha_div)
+pielous.kruskal_sampt <- kruskal.test(Pielous_Evenness ~ sample_point, data=alpha_div)
+shannon.kruskal_sampt
+observed.kruskal_sampt
+pielous.kruskal_sampt
 
-
-
-
-
-
+##test significance with location as groups
+shannon.kruskal_loc <- kruskal.test(Shannon ~ Location, data=alpha_div)
+observed.kruskal_loc <- kruskal.test(Observed ~ Location, data=alpha_div)
+pielous.kruskal_loc <- kruskal.test(Pielous_Evenness ~ Location, data=alpha_div)
+shannon.kruskal_loc
+observed.kruskal_loc
+pielous.kruskal_loc
 
 
 
