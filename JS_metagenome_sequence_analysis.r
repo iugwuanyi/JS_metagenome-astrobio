@@ -26,7 +26,7 @@ library(ggplot2) # Data Visualization
 #
 #######################################################################################################################
 
-#generate a clean taxonomy table from the output of kaiju taxonomy run
+#generate a clean taxonomy table from the output of the Kaiju taxonomy run
 clean_taxatable <- function(taxa_table){
   taxa <- taxa_table %>% select(-2)
   taxa[taxa=="cannot be assigned to a (non-viral) species"] <- "Unclassified"
@@ -40,7 +40,7 @@ clean_taxatable <- function(taxa_table){
 #calculate the relative abundance
 Rel_abund <- function(x, na.rm = F){x / sum(x, na.rm = na.rm)} 
 
-#summarize taxonomy table (sum) at different taxonomic levels. 
+#summarize the taxonomy table (sum) at different taxonomic levels. 
 summarize_taxa <- function(taxa_table, taxa_level = c("Domain", "Phylum", "Class", "Order", "Family", "Genus")){
   taxa_level <- match.arg(taxa_level)
   taxonomiclevel_relabund <- switch(taxa_level,
@@ -52,8 +52,8 @@ summarize_taxa <- function(taxa_table, taxa_level = c("Domain", "Phylum", "Class
                                     "Genus" = taxa_table %>% group_by(Genus) %>% summarise(across(where(is.numeric), sum)) %>% ungroup())
 }  
 
-# Select the top 20 taxa based on average at the selected taxonomic level. The summarized data is pivoted longer and the resulting dataframe 
-# will be used to generate make stacked bar plots in Tableau. The Rel_abund function has to be run for this function to work
+# Select the top 20 taxa based on average at the selected taxonomic level. The summarized data is pivoted longer and the resulting table 
+# will be used to generate stacked bar plots in Tableau. The Rel_abund function has to be run for this function to work
 top20 <- function(table){
   name <- deparse(substitute(table))
   table_agg <- table %>% filter(table[,1] != "Unclassified") %>% dplyr::mutate(Average = rowMeans(across(where(is.numeric)))) %>% arrange(desc(Average))
@@ -93,7 +93,7 @@ summary(temp_ph.lm)
 # 
 # Import the output file generated after assigning taxonomy to metagenome sequences using kaiju v1.8.2. The imported taxonomy table is 
 # prepared for downstream analyses using the clean taxonomy table function above. Low-abundance species and potential contaminants, as listed 
-# below were then filtered from the taxonomy table. Singleton and sequences in a single column were also filtered from the taxonomy table.
+# below, were then filtered from the taxonomy table. Singleton and sequences in a single column were also filtered from the taxonomy table.
 #
 #################################################################################################################################################
 
@@ -109,7 +109,7 @@ Taxonomy_table2 <- clean_taxatable(Taxonomy_table) %>%
                   "R-4_a" = "12", "R-4_b" = "13", "R-5" = "14"))
 
 
-#filter potential contaminants and sequences unclassified at the domain level from taxonomy table
+#filter potential contaminants and sequences unclassified at the domain level from the taxonomy table
 ##filter species from individual samples if the relative abundance of the species < 0.0001 (i.e., 0.001%) in that sample
 Taxonomy_table_lowabundremoved <- Taxonomy_table2 %>% mutate(across(.cols = c(8:ncol(Taxonomy_table2)), .fns = ~case_when(.x/sum(.x) <0.0001 ~ 0, TRUE ~ as.numeric(.x))), 
                                                             Counts = rowSums(across(c(8:ncol(Taxonomy_table2))))) %>% filter(Counts != 0) %>% select(-Counts)
@@ -117,7 +117,7 @@ Taxonomy_table_lowabundremoved <- Taxonomy_table2 %>% mutate(across(.cols = c(8:
 ##remove sequences that are unclassified at the domain level 
 Taxonomy_table_lowabundremoved_noUnclassDomain <- Taxonomy_table_lowabundremoved %>% filter(Domain != "Unclassified")
 
-##filter genera previously identified as microbiology kit and laboratory contaminant by Sheik et al 2018 and Weyrich et al 2019. The list of contaminant genera 
+##filter genera previously identified as microbiology kit and laboratory contaminants by Sheik et al. 2018 and Weyrich et al. 2019. The list of contaminant genera 
 ##used is available in my Github repository in contaminant_genus.csv 
 contaminant <- read.csv("Data_files/contaminant_genus.csv", header = TRUE) #import contaminant_genus.csv
 cont_genus <- contaminant$Genus #change to a list
@@ -128,7 +128,7 @@ Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont <- setdiff(Taxonomy_table_
 singleton_in_taxonomytable  <- Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont %>% 
   mutate(Counts = rowSums(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont[8:ncol(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont)] > 0), 
          Total= rowSums(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont[8:ncol(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont)])) %>% 
-  filter(Total < 2 | Counts < 2) %>% select(-c(Total, Counts)) #identify singletons and species in only one sample in taxonomy table
+  filter(Total < 2 | Counts < 2) %>% select(-c(Total, Counts)) #identify singletons and species in only one sample present in the taxonomy table
 Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton <- setdiff(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont, singleton_in_taxonomytable) #remove singletons and species in only one sample from taxonomy table
 write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS_clean_taxonomytable.csv") #export clean taxonomy table
 
@@ -136,9 +136,9 @@ write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS
 #################################################################################################################################################
 # 
 # The filtered taxonomy table is summarized (sum and relative abundance) at the phylum and genus levels using the summarize_taxa function above.
-# The summarized table is reduced to the top 20 taxa (based on average) at the selected taxonomic level with all other taxa at that level
+# The summarized table is reduced to the top 20 taxa (based on average) at the selected taxonomic level, with all other taxa at that level
 # grouped into "Other" using the summarize_phyla_4_plot above. The summarized phyla table is pivoted to generate a table used to make stacked bar 
-# plots in Tableau.the complete list of genera was also pivoted and used to make stacked bar plot in Tableau.
+# plots in Tableau.
 #
 #################################################################################################################################################
 
@@ -146,7 +146,7 @@ write.csv(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "JS
 phylum <- summarize_taxa(Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton, "Phylum") #calculate the sum of phyla in each sample
 top20_phylum <- top20(phylum) #generate a table containing only the top 20 phyla using the top_20 function above
 phylum_summary_forplot <- summarize_phyla_4_plot(phylum, top20_phylum) %>% mutate(across(where(is.numeric), Rel_abund)) %>% 
-  pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #generate a table of top 20 phyla and all other phyla are grouped into the category "Others". Table is pivoted to generate input for Tableau
+  pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #generate a table of the top 20 phyla and all other phyla are grouped into the category "Others". Table is pivoted to generate input for Tableau
 write.csv(phylum_summary_forplot, "JS_phylum_summary_forplot.csv") #export file for Tableau
 
 
@@ -157,7 +157,7 @@ genus_relabund <- genus %>% mutate_if(is.numeric, Rel_abund) #calculate the rela
 
 #################################################################################################################################################
 # 
-# Calculating alpha and beta diversity. Alpha diversity was calculated using both Phyloseq.  Before calculating alpha diversity and 
+# Alpha and beta diversity. Alpha diversity was calculated using Phyloseq.  Before calculating alpha and 
 # beta diversity, the taxonomy table was rarified to the minimum number of sequences in a sample. 
 #
 #################################################################################################################################################
@@ -166,7 +166,7 @@ genus_relabund <- genus %>% mutate_if(is.numeric, Rel_abund) #calculate the rela
 species <- Taxonomy_lowabundremoved_noUnclassDomain_noKitLabCont_noSingleton[,c(7:21)] #select the species and abundance columns 
 species_transp <- species %>% pivot_longer(cols = -Species) %>% pivot_wider(names_from = Species) %>% dplyr::rename("Sample" = "name") #transpose table so species names are columns and samples are rows
 min_n_seqs <- min(rowSums(species_transp[-1])) #calculate the number of sequences in each sample and select the minimum number of sequences
-species_transp_df <- as.data.frame(species_transp) #convert the data table from a tibble to dataframe 
+species_transp_df <- as.data.frame(species_transp) #convert the data table from a tibble to data frame 
 rownames(species_transp_df) <- species_transp_df$Sample #change row names
 species_transp_df <- species_transp_df[,-1] #remove first row
 species_transp_df_OTU <- otu_table(species_transp_df, taxa_are_rows = FALSE) #create a phyloseq object 
