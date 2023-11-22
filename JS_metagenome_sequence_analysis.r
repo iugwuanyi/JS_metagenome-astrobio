@@ -174,9 +174,9 @@ write.csv(alpha_div, "JS_alpha_diversity.csv") #export alpha diversity table
 
 #test statistical significance of observed differences in alpha diversity 
 ##test significance with sampling_point as groups
-shannon.kruskal_sampt <- kruskal.test(Shannon ~ sample_point, data=alpha_div)
-observed.kruskal_sampt <- kruskal.test(Observed ~ sample_point, data=alpha_div)
-pielous.kruskal_sampt <- kruskal.test(Pielous_Evenness ~ sample_point, data=alpha_div)
+shannon.kruskal_sampt <- kruskal.test(Shannon ~ Sampling_point, data=alpha_div)
+observed.kruskal_sampt <- kruskal.test(Observed ~ Sampling_point, data=alpha_div)
+pielous.kruskal_sampt <- kruskal.test(Pielous_Evenness ~ Sampling_point, data=alpha_div)
 shannon.kruskal_sampt
 observed.kruskal_sampt
 pielous.kruskal_sampt
