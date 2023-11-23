@@ -231,3 +231,21 @@ simper_genus_scaled <- as.data.frame(scale(simper_genus_scaled, center=TRUE, sca
 simper_genus_scaled_pivot <- simper_genus_scaled %>% pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #pivot table
 write.csv(simper_genus_scaled_pivot, "JS_simper_genus_transformed.csv") #export table to generate heatmap in Tableau
 
+
+
+#################################################################################################################################################
+# Metagenome-Assembled Genomes (MAGs) were assembled and taxonomy was assigned to each MAG using GTDB-TK v2.1.1. Taxonomy data was summarized 
+# at the phylum level to find the frequency of MAGs in each sample. Generated frequency table was exported and used to generate a donut plot 
+# in Tableau. The scripts for assembling MAGs and assigning taxonomy to MAGs can be found in the Scripts directory in my repository.
+#################################################################################################################################################
+
+MAG_taxa <- read.table("Data_files/JS_bin_taxonomy.csv", header = TRUE, sep = ",")
+active_MAG_abund <- read.delim("Data_files/JS_active_binabundance.tab",  header = TRUE, sep = "\t", check.names = FALSE)
+relic_MAG_abund <- read.table("Data_files/JS_relic_binabundance.tab",  header = TRUE, sep = "\t", check.names = FALSE)
+MAG_abund <- active_MAG_abund %>% full_join(relic_MAG_abund, by = "Genomic_bins") %>% replace(is.na(.), 0) %>% 
+  dplyr::rename(c("A-S1" = "1_paired", "A-S2" = "2_paired", "A-1" = "3_paired", "A-2" = "4_paired", "A-3" = "5_paired", "A-4" = "6_paired",
+                  "A-5" = "7_paired", "R-S" = "8_paired", "R-1" = "9_paired", "R-2" = "10_paired", "R-3" = "11_paired", 
+                  "R-4_a" = "12_paired", "R-4_b" = "13_paired", "R-5" = "14_paired", "MAG" = "Genomic_bins")) %>% right_join(MAG_taxa, by = "MAG") %>%
+  select(MAG, Pool, Domain, Phylum, Class, Order, Family, Genus, Species, `A-S1`, `A-S2`, `A-1`, `A-2`, `A-3`, `A-4`, `A-5`, `R-S`, `R-1`, `R-2`, `R-3`, `R-4_a`,`R-4_b`, `R-5`)
+
+ 
