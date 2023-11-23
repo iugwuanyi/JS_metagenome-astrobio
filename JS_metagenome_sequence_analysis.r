@@ -68,6 +68,12 @@ summarize_phyla_4_plot <- function(table, top20_phyla_list){
   phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)
 }
 
+#function to count the number of non-zero rows
+rowCount <- function(x){sum(x > 0)}
+
+#function to calculate the relative abundance ratio for MAG
+Rel_abund_ratio <- function(x, na.rm = F){(x / max(x, na.rm = na.rm))*100} 
+
 
 #################################################################################################################################################
 #
@@ -234,18 +240,57 @@ write.csv(simper_genus_scaled_pivot, "JS_simper_genus_transformed.csv") #export 
 
 
 #################################################################################################################################################
+# 
 # Metagenome-Assembled Genomes (MAGs) were assembled and taxonomy was assigned to each MAG using GTDB-TK v2.1.1. Taxonomy data was summarized 
 # at the phylum level to find the frequency of MAGs in each sample. Generated frequency table was exported and used to generate a donut plot 
-# in Tableau. The scripts for assembling MAGs and assigning taxonomy to MAGs can be found in the Scripts directory in my repository.
+# in Tableau. The relative abundance ratio of each MAGs in each sample was calculated and ratio used to generate bubble plot.The scripts for 
+# assembling MAGs and assigning taxonomy to MAGs can be found in the Scripts directory in my repository.
+#
 #################################################################################################################################################
 
+#import MAG taxonomy and abundance tables
 MAG_taxa <- read.table("Data_files/JS_bin_taxonomy.csv", header = TRUE, sep = ",")
 active_MAG_abund <- read.delim("Data_files/JS_active_binabundance.tab",  header = TRUE, sep = "\t", check.names = FALSE)
 relic_MAG_abund <- read.table("Data_files/JS_relic_binabundance.tab",  header = TRUE, sep = "\t", check.names = FALSE)
+
+#merge all three tables
 MAG_abund <- active_MAG_abund %>% full_join(relic_MAG_abund, by = "Genomic_bins") %>% replace(is.na(.), 0) %>% 
   dplyr::rename(c("A-S1" = "1_paired", "A-S2" = "2_paired", "A-1" = "3_paired", "A-2" = "4_paired", "A-3" = "5_paired", "A-4" = "6_paired",
                   "A-5" = "7_paired", "R-S" = "8_paired", "R-1" = "9_paired", "R-2" = "10_paired", "R-3" = "11_paired", 
                   "R-4_a" = "12_paired", "R-4_b" = "13_paired", "R-5" = "14_paired", "MAG" = "Genomic_bins")) %>% right_join(MAG_taxa, by = "MAG") %>%
   select(MAG, Pool, Domain, Phylum, Class, Order, Family, Genus, Species, `A-S1`, `A-S2`, `A-1`, `A-2`, `A-3`, `A-4`, `A-5`, `R-S`, `R-1`, `R-2`, `R-3`, `R-4_a`,`R-4_b`, `R-5`)
 
- 
+
+#summarize the MAGs by phyla i.e., number of MAGs belonging to each phyla
+MAG_phylumcount <- MAG_abund[,c(1,3,4)] %>% group_by(Domain, Phylum) %>% summarize(Count = rowCount(Phylum)) %>% arrange(desc(Count))
+write.csv(MAG_phylumcount, "JS_MAGs_phylum_count.csv") #export table to generate donut plot in tableau
+
+
+#calculate the relative abundance ratio of MAGs in each sample
+MAG_relabund_ratio <- MAG_abund %>% mutate(across(where(is.numeric), Rel_abund_ratio))
+
+
+#prepare data to generate bubble plot of relative abundance ratios
+Number <- seq(1,858,1) #generate a list of numbers, 1 to 858 for each MAG
+MAG_relabund_ratio$Number <- Number #assign a number in the list to each MAG
+Active <- MAG_relabund_ratio[,c(1,10:16,24)] %>% pivot_longer(cols = c(2:8), names_to = "Sample", values_to = "Ratio") #subset and pivot data for active spring
+Relic <- MAG_relabund_ratio[,c(1,17:24)] %>% pivot_longer(cols = c(2:8), names_to = "Sample", values_to = "Ratio") #subset and pivot data for relic spring
+
+#create bubble plot showing relative abundance ratio of MAGs in each sample. Bubble plot was created separately for active and relic spring samples
+active_plot <- active %>% ggplot(aes(x = Number, y = Ratio, size = Ratio)) + geom_point(alpha = 0.3, shape = 21, fill="deepskyblue4", color="black") + 
+  scale_size(range = c(.1, 32), name = "") + theme_bw() +  xlim(0, 858) + 
+  theme(axis.title.x=element_blank(),  axis.text.x=element_blank(), axis.ticks.x=element_blank(),axis.title.y=element_blank(),text = element_text(size = 65), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  scale_x_continuous(limits=c(-50, 950), expand = c(0, 0)) + scale_y_continuous(limits=c(0, 110), expand = c(0, 0), breaks=c(0,50,100))
+active_plot2 <- active_plot + facet_wrap( ~factor(Sample, levels=c("A-S1","A-S2","A-1","A-2","A-3","A-4","A-5")), nrow = 1) + theme(legend.position = "none")
+active_plot2
+ggsave("JS_relabundratio_bubbleplot_active.png", dpi = 300, dev ='png', height = 6, width = 48, units = "in")
+
+relic_plot <- relic %>% ggplot(aes(x = Number, y = Ratio, size = Ratio)) + geom_point(alpha = 0.3, shape = 21, fill="firebrick3", color="black") + 
+  scale_size(range = c(.1, 32), name = "") + theme_bw() +  xlim(0, 858) + 
+  theme(axis.title.x=element_blank(),  axis.text.x=element_blank(), axis.ticks.x=element_blank(),axis.title.y=element_blank(),text = element_text(size = 65), 
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  scale_x_continuous(limits=c(-50, 950), expand = c(0, 0)) + scale_y_continuous(limits=c(0, 110), expand = c(0, 0), breaks=c(0,50,100))
+relic_plot2 <- relic_plot + facet_wrap( ~factor(Sample, levels=c("R-S","R-1","R-2","R-3","R-4_a","R-4_b","R-5")), nrow = 1) + theme(legend.position = "none")
+relic_plot2
+ggsave("MAG_abundance_bubbleplot_relic.png", dpi = 300, dev ='png', height = 6, width = 48, units = "in")
