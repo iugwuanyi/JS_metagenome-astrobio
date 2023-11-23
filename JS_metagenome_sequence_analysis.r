@@ -212,3 +212,10 @@ set.seed(123)
 nmds_braycurtis_beta_div_phy <- metaMDS(braycurtis_beta_div_phy) #Non-metric Multidimensional Scaling (NMDS) of Bray-Curtis dissimilarity index
 NMDS_scores_phy <- scores(nmds_braycurtis_beta_div_phy) %>% as_tibble() %>% mutate(phylum_transp[,1]) %>% select(Sample, everything()) #extract scores from NMDS scaling
 write.csv(NMDS_scores_phy, 'JS_NMDS_braycurtis_phylum.csv') #export NMDS score used generate scatter plot in Tableau
+
+
+#using ANOSIM to test whether there is a significant difference in microbial composition across the 4 clusters observed in NMDS plot.
+beta_div_gen.anosim <- anosim(braycurtis_beta_div_gen, Sample_grp, distance = "bray", permutations = 999)
+beta_div_gen.anosim
+beta_div_phy.anosim <- anosim(braycurtis_beta_div_phy, Sample_grp, distance = "bray", permutations = 999)
+beta_div_phy.anosim
