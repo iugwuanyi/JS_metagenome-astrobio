@@ -219,3 +219,15 @@ beta_div_gen.anosim <- anosim(braycurtis_beta_div_gen, Sample_grp, distance = "b
 beta_div_gen.anosim
 beta_div_phy.anosim <- anosim(braycurtis_beta_div_phy, Sample_grp, distance = "bray", permutations = 999)
 beta_div_phy.anosim
+
+
+#use simper analysis to identify genera that contributed to the observed dissimilarity. Extract relative abundance of top genera contributing to dissimilarity.
+JS_simper <- simper(rarified_genus_transp[,c(1:385)], Sample_grp, permutations = 1000) 
+taxa_list <- c("Scenedesmus","Tychonema","Limnoglobus","Desulfococcus","Carnobacterium","Rubripirellula","Tolypothrix","Desulfomonile","Scotinosphaera",
+                   "Chamaesiphon","Thiocapsa","Porphyrobacter","Nodosilinea","Ilumatobacter","Phormidesmis","Rubrobacter","Erythrobacter")
+simper_genus <- genus_relabund %>% filter(Genus %in% taxa_list)
+simper_genus_scaled <- simper_genus %>% column_to_rownames(var="Genus") #scale the abundance of genera that contributed to the dissimilarity
+simper_genus_scaled <- as.data.frame(scale(simper_genus_scaled, center=TRUE, scale=TRUE)) %>% rownames_to_column(var = "Genus")
+simper_genus_scaled_pivot <- simper_genus_scaled %>% pivot_longer(cols = c(2:15), names_to = "Sample", values_to = "Relative abundance") #pivot table
+write.csv(simper_genus_scaled_pivot, "JS_simper_genus_transformed.csv") #export table to generate heatmap in Tableau
+
