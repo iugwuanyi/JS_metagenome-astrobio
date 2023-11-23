@@ -214,7 +214,7 @@ NMDS_scores_phy <- scores(nmds_braycurtis_beta_div_phy) %>% as_tibble() %>% muta
 write.csv(NMDS_scores_phy, 'JS_NMDS_braycurtis_phylum.csv') #export NMDS score used generate scatter plot in Tableau
 
 
-#using ANOSIM to test whether there is a significant difference in microbial composition across the 4 clusters observed in NMDS plot.
+#use ANOSIM to test the significance of the observed differences in microbial composition.
 beta_div_gen.anosim <- anosim(braycurtis_beta_div_gen, Sample_grp, distance = "bray", permutations = 999)
 beta_div_gen.anosim
 beta_div_phy.anosim <- anosim(braycurtis_beta_div_phy, Sample_grp, distance = "bray", permutations = 999)
