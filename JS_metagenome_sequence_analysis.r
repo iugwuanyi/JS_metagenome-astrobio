@@ -68,17 +68,6 @@ summarize_phyla_4_plot <- function(table, top20_phyla_list){
   phylum_top20_others <- phylum_top20 %>% bind_rows(phylum_others)
 }
 
-#function to transpose and rarefy taxonomy table, calculate Bray-Curtis dissimilarity index, perform Nonmetric Multidimensional Scaling (NMDS) and extract scores from NMDS scaling 
-bdiversity_cal <- function(table){
-  table_transp <- table %>% pivot_longer(cols = -1) %>% pivot_wider(names_from = colnames(table[1])) %>% dplyr::rename("Sample" = "name")
-  min_n_seqs_calc <- min(rowSums(table_transp[-1]))
-  rarified_table_transp <- rrarefy(table_transp[,c(2:ncol(table_transp))], sample = min_n_seqs_calc) %>% as.data.frame(rownames = "Sample")
-  braycurtis_beta_div <- vegdist(rarified_table_transp, distance = "bray", upper = TRUE, diag = TRUE)
-  set.seed(123)
-  nmds_braycurtis_beta_div <- metaMDS(braycurtis_beta_div)
-  NMDS_scores <- scores(nmds_braycurtis_beta_div) %>% as_tibble() %>% mutate(table_transp[,1]) %>% select(Sample, everything())
-}
-
 
 #################################################################################################################################################
 #
@@ -179,7 +168,8 @@ species_transp_df_rar <- rarefy_even_depth(species_transp_df_OTU, sample.size = 
 alpha_div <- estimate_richness(species_transp_df_rar, measures = c("Observed", "Shannon")) #calculate alpha diversity
 alpha_div$Pielous_Evenness <- alpha_div$Shannon/log(alpha_div$Observed) #calculate Pielou's evenness
 alpha_div$Location <- rep(c("Active", "Relic"), each = 7) #create a new row in the alpha diversity table that identifies the sampling location of each sample
-alpha_div$Sampling_point <- rep(c("Source", "midstream", "endstream", "dry."), times = c(2,4,1,7)) #create a new row in the alpha diversity table that identifies the sampling point in the active spring
+Sample_grp <- rep(c("Active_source", "Active_midstream", "Active_endstream", "Relic_dry"), times = c(2,4,1,7)) #create sample groups
+alpha_div$Sampling_point <- Sample_grp #create new row in the alpha diversity table that identifies the sampling point in the active spring
 alpha_div <- rownames_to_column(alpha_div, var = "Sample") %>% select(Sample, Location, Sampling_point, everything()) #rearrange columns
 write.csv(alpha_div, "JS_alpha_diversity.csv") #export alpha diversity table to generate box plot in Tableau
 
@@ -204,16 +194,21 @@ pielous.kruskal_loc
 
 #calculate beta diversity based on Bray-Curtis dissimilarity.
 ##beta diversity using genus abundance table as input
-NMDS_scores_gen <- bdiversity_cal(genus)
-write.csv(NMDS_scores_gen, 'JS_NMDS_braycurtis_genus.csv') #export scores to generate scatter plot in Tableau
+genus_transp <- genus %>% pivot_longer(cols = -Genus) %>% pivot_wider(names_from = Genus) %>% dplyr::rename("Sample" = "name") #transpose table
+min_n_seqs_gen <- min(rowSums(genus_transp[-1])) #calculate the number of sequences in each sample and select the minimum number of sequences
+rarified_genus_transp <- rrarefy(genus_transp[,c(2:386)], sample = min_n_seqs_gen) %>% as.data.frame(rownames = "Sample") ##rarefy table with vegan
+braycurtis_beta_div_gen <- vegdist(rarified_genus_transp, distance = "bray", upper = TRUE, diag = TRUE) #compute Bray-Curtis dissimilarity index
+set.seed(123)
+nmds_braycurtis_beta_div_gen <- metaMDS(braycurtis_beta_div_gen) #Non-metric Multidimensional Scaling (NMDS) of Bray-Curtis dissimilarity index
+NMDS_scores_gen <- scores(nmds_braycurtis_beta_div_gen) %>% as_tibble() %>% mutate(genus_transp[,1]) %>% select(Sample, everything()) #extract scores from NMDS scaling
+write.csv(NMDS_scores_gen, 'JS_NMDS_braycurtis_genus.csv') #export NMDS score used generate scatter plot in Tableau
 
-##beta diversity using phylum abundance table as input
-NMDS_scores_phylum <- bdiversity_cal(phylum)
-write.csv(NMDS_scores_phy, 'JS_NMDS_braycurtis_phylum.csv')
-
-  
-  
-  
-  
-  
-  
+#Based on phylum abundance
+phylum_transp <- phylum %>% pivot_longer(cols = -Phylum) %>% pivot_wider(names_from = Phylum) %>% dplyr::rename("Sample" = "name") #transpose table
+min_n_seqs_phyl <- min(rowSums(phylum_transp[-1])) #calculate the number of sequences in each sample and select the minimum number of sequences
+rarified_phylum_transp <- rrarefy(phylum_transp[,c(2:50)], sample = min_n_seqs_phyl) %>% as.data.frame(rownames = "Sample") ##rarefy table with vegan
+braycurtis_beta_div_phy <- vegdist(rarified_phylum_transp, distance = "bray", upper = TRUE, diag = TRUE) #compute Bray-Curtis dissimilarity index
+set.seed(123)
+nmds_braycurtis_beta_div_phy <- metaMDS(braycurtis_beta_div_phy) #Non-metric Multidimensional Scaling (NMDS) of Bray-Curtis dissimilarity index
+NMDS_scores_phy <- scores(nmds_braycurtis_beta_div_phy) %>% as_tibble() %>% mutate(phylum_transp[,1]) %>% select(Sample, everything()) #extract scores from NMDS scaling
+write.csv(NMDS_scores_phy, 'JS_NMDS_braycurtis_phylum.csv') #export NMDS score used generate scatter plot in Tableau
