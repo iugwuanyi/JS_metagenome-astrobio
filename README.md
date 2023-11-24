@@ -1,4 +1,4 @@
-##Data and Code from the microbial ecology study of an Arctic travertine-forming geothermal
+## Data and Code from the microbial ecology study of an Arctic travertine-forming geothermal
 
 This paper can be accessesed at XXXXXXXXX
 
