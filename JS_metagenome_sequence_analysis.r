@@ -169,7 +169,7 @@ min_n_seqs <- min(rowSums(species_transp[-1])) #calculate the number of sequence
 species_transp_df <- as.data.frame(species_transp) #convert the data table from a tibble to data frame 
 rownames(species_transp_df) <- species_transp_df$Sample #change row names
 species_transp_df <- species_transp_df[,-1] #remove first row
-species_transp_df_OTU <- otu_table(species_transp_df, taxa_are_rows = FALSE) #create a phyloseq object 
+species_transp_df_OTU <- otu_table(species_transp_df, taxa_are_rows = FALSE) #convert taxonomy table to a phyloseq object 
 species_transp_df_rar <- rarefy_even_depth(species_transp_df_OTU, sample.size = min_n_seqs, rngseed = 123) ##rarify taxonomy table
 alpha_div <- estimate_richness(species_transp_df_rar, measures = c("Observed", "Shannon")) #calculate alpha diversity
 alpha_div$Pielous_Evenness <- alpha_div$Shannon/log(alpha_div$Observed) #calculate Pielou's evenness
