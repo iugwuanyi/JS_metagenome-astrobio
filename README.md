@@ -1,12 +1,12 @@
 ## Data and Code from the Microbial Ecology Study of an Arctic Travertine-forming Geothermal Spring
 
-This paper can be accessesed at XXXXXXXXX
+This paper can be accessed at XXXXXXXXX.
 
 Cite as:
 
-#CITATION WILL BE ADDED WHEN PAPER IS PUBLISHED
+#CITATION WILL BE ADDED WHEN THE PAPER IS PUBLISHED
 
-This repository contains link to raw sequences, data and the code used to investigate the microbial ecology of a 
+This repository contains the link to metagenome sequences, data, and the code used to investigate the microbial ecology of a 
 travertine-forming geothermal spring in the Arctic and its astrobiological relevance.
 
 Processing of metagenome sequence was performed using a suite of freely available software installed on 
@@ -20,4 +20,4 @@ MAG taxonomy table, MAG abundance tables, and all files used as input for data a
 R code used to analyze data generated after processing metagenome sequences. The raw metagenome sequences and MAGs 
 can be found in the NCBI SRA archive under Bioproject number XXXXXXXX.
 
-For questions please contact me 
+For questions, please contact me. 
