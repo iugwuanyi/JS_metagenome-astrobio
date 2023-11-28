@@ -4,7 +4,7 @@ This paper can be accessed at XXXXXXXXX.
 
 Cite as:
 
->MANUSCRIPT IN REVIEW. CITATION WILL BE ADDED WHEN THE PAPER IS PUBLISHED
+>MANUSCRIPT CURRENTLY IN REVIEW. CITATION WILL BE ADDED WHEN THE PAPER IS PUBLISHED
 
 
 This repository contains the link to metagenome sequences, data, and the code used to investigate the microbial ecology of a 
