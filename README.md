@@ -4,7 +4,9 @@ This paper can be accessed at XXXXXXXXX.
 
 Cite as:
 
-#CITATION WILL BE ADDED WHEN THE PAPER IS PUBLISHED
+|
+|MANUSCRIPT IN REVIEW. CITATION WILL BE ADDED WHEN THE PAPER IS PUBLISHED
+|
 
 This repository contains the link to metagenome sequences, data, and the code used to investigate the microbial ecology of a 
 travertine-forming geothermal spring in the Arctic and its astrobiological relevance.
