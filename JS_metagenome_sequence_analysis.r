@@ -238,7 +238,6 @@ simper_genus_scaled_pivot <- simper_genus_scaled %>% pivot_longer(cols = c(2:15)
 write.csv(simper_genus_scaled_pivot, "JS_simper_genus_transformed.csv") #export table to generate heatmap in Tableau
 
 
-
 #################################################################################################################################################
 # 
 # Metagenome-Assembled Genomes (MAGs) were assembled and taxonomy was assigned to each MAG using GTDB-TK v2.1.1. Taxonomy data was summarized 
@@ -273,8 +272,8 @@ MAG_relabund_ratio <- MAG_abund %>% mutate(across(where(is.numeric), Rel_abund_r
 #prepare data to generate bubble plot of relative abundance ratios
 Number <- seq(1,858,1) #generate a list of numbers, 1 to 858 for each MAG
 MAG_relabund_ratio$Number <- Number #assign a number in the list to each MAG
-Active <- MAG_relabund_ratio[,c(1,10:16,24)] %>% pivot_longer(cols = c(2:8), names_to = "Sample", values_to = "Ratio") #subset and pivot data for active spring
-Relic <- MAG_relabund_ratio[,c(1,17:24)] %>% pivot_longer(cols = c(2:8), names_to = "Sample", values_to = "Ratio") #subset and pivot data for relic spring
+active <- MAG_relabund_ratio[,c(1,10:16,24)] %>% pivot_longer(cols = c(2:8), names_to = "Sample", values_to = "Ratio") #subset and pivot data for active spring
+relic <- MAG_relabund_ratio[,c(1,17:24)] %>% pivot_longer(cols = c(2:8), names_to = "Sample", values_to = "Ratio") #subset and pivot data for relic spring
 
 #create bubble plot showing relative abundance ratio of MAGs in each sample. Bubble plot was created separately for active and relic spring samples
 active_plot <- active %>% ggplot(aes(x = Number, y = Ratio, size = Ratio)) + geom_point(alpha = 0.3, shape = 21, fill="deepskyblue4", color="black") + 
@@ -294,3 +293,13 @@ relic_plot <- relic %>% ggplot(aes(x = Number, y = Ratio, size = Ratio)) + geom_
 relic_plot2 <- relic_plot + facet_wrap( ~factor(Sample, levels=c("R-S","R-1","R-2","R-3","R-4_a","R-4_b","R-5")), nrow = 1) + theme(legend.position = "none")
 relic_plot2
 ggsave("MAG_abundance_bubbleplot_relic.png", dpi = 300, dev ='png', height = 6, width = 48, units = "in")
+
+
+#################################################################################################################################################
+# 
+# Functional annotation of MAGs against the KEGG and PFAM database was done using EnrichM v0.5.0. The PFAM frequency table was imported into R and 
+# was searched for genes that encode enzymes that help microbial communities adapt to environmental stress (e.g., cold and UV radiation stress).
+# The script for functional annotation of MAGs can be found in the Scripts directory in my repository.
+#
+#################################################################################################################################################
+
