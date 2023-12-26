@@ -209,7 +209,7 @@ nmds_braycurtis_beta_div_gen <- metaMDS(braycurtis_beta_div_gen) #Non-metric Mul
 NMDS_scores_gen <- scores(nmds_braycurtis_beta_div_gen) %>% as_tibble() %>% mutate(genus_transp[,1]) %>% select(Sample, everything()) #extract scores from NMDS scaling
 write.csv(NMDS_scores_gen, 'JS_NMDS_braycurtis_genus.csv') #export NMDS score used generate scatter plot in Tableau
 
-#Based on phylum abundance
+##beta diversity using phylum abundance table as input
 phylum_transp <- phylum %>% pivot_longer(cols = -Phylum) %>% pivot_wider(names_from = Phylum) %>% dplyr::rename("Sample" = "name") #transpose table
 min_n_seqs_phyl <- min(rowSums(phylum_transp[-1])) #calculate the number of sequences in each sample and select the minimum number of sequences
 rarified_phylum_transp <- rrarefy(phylum_transp[,c(2:50)], sample = min_n_seqs_phyl) %>% as.data.frame(rownames = "Sample") ##rarefy table with vegan
@@ -302,4 +302,23 @@ ggsave("MAG_abundance_bubbleplot_relic.png", dpi = 300, dev ='png', height = 6, 
 # The script for functional annotation of MAGs can be found in the Scripts directory in my repository.
 #
 #################################################################################################################################################
+
+#import PFAM functional annotation table
+MAG_pfam <- read_xlsx("Data_files/JS_binFunction_PFAM_frequencytable.xlsx", sheet = "Sheet1")
+
+#filtering protein families involved in cold and UV stress adaptation
+##filtering select protein families involved in endospore formation
+end_prot_fam <- c("PF08769", "PF01944", "PF07454", "PF09551", "PF09548", "PF09546", "PF09547", "PF04232", "PF14069", "PF03418")
+MAG_pfam_end <- MAG_pfam %>% filter(ID %in% end_prot_fam)
+MAG_pfam_end_transp <- MAG_pfam_end %>% pivot_longer(cols = -ID) %>% pivot_wider(names_from = ID) %>% dplyr::rename("MAG" = "name") %>%
+  select(MAG, PF08769, PF01944, PF07454, PF09551, PF09548, PF09546, PF09547, PF04232, PF14069, PF03418)
+###merging values in each row to form a string that will be used as input for heatmap on phylogenetic tree
+end_HMvalues <- MAG_pfam_end_transp %>% mutate(end_HMvalues = paste(MAG, PF08769, PF01944, PF07454, PF09551, PF09548, PF09546, PF09547, PF04232, PF14069, PF03418, sep=",")) %>%
+  select(end_HMvalues)
+write.csv(end_HMvalues, "JS_MAGs_endospore_heatmap.csv")
+
+
+
+
+
 
