@@ -19,6 +19,6 @@ raw metagenome sequences and build metagenome-assembled genomes (MAGs). The Data
 data files generated after processing metagenome sequences. The Data_files directory contains the taxonomy table,
 MAG taxonomy table, MAG abundance tables, and all files used as input for data analyses in R. The file JS_metagenome_sequence_analysis.r contains the 
 R code used to analyze data generated after processing metagenome sequences. The raw metagenome sequences and MAGs 
-can be found in the NCBI SRA archive under Bioproject number PRJNA1080596.
+can be found in the NCBI SRA archive under Bioproject number [PRJNA1080596](https://www.ncbi.nlm.nih.gov/bioproject/?term=PRJNA1080596).
 
 For questions, please contact me. 
