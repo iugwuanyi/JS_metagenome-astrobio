@@ -15,10 +15,12 @@ library(tidyr) # Data manipulation
 library(readxl) # Importing excel files
 library(phyloseq) # Analysis of microbiome data
 library(vegan) # Community ecology analysis
-library(gdata) #Tools for data manipulation
-library(EcolUtils) # Community ecology analysis
 library(stringr) # String manipulation
 library(ggplot2) # Data Visualization
+
+library(gdata) #Tools for data manipulation
+library(EcolUtils) # Community ecology analysis
+
 
 
 ####################################################################################################################### 
